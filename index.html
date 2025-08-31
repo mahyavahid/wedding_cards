@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>دعوت‌نامه عروسی دو اسلایدی با شمارش معکوس طوسی</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,sans-serif;background:#f8fafc;color:#0f172a;display:flex;flex-direction:column;align-items:center;padding:16px;}
+h1{text-align:center;margin-bottom:12px;}
+.digital-countdown{display:flex;gap:12px;margin:20px 0;}
+.time-box{
+  background:#222;
+  color:#a0a0a0; /* رنگ طوسی */
+  font-weight:bold;
+  font-size:2rem;
+  padding:16px 24px;
+  border-radius:12px;
+  box-shadow:0 0 15px rgba(160,160,160,0.4);
+  animation:pulse 1s infinite;
+}
+.time-label{font-size:0.8rem;margin-top:4px;text-align:center;color:#0f172a;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.card{width:100%;max-width:720px;background:rgba(255,255,255,0.8);border-radius:16px;box-shadow:0 10px 35px rgba(0,0,0,0.08);padding:16px;margin-bottom:24px;position:relative;text-align:center;}
+.names{font-size:20px;font-weight:bold;margin-bottom:12px;}
+video{width:100%;border-radius:12px;display:block;margin-bottom:12px;object-fit:cover;}
+.controls{display:flex;justify-content:center;gap:8px;margin-bottom:16px;}
+.btn{padding:6px 12px;border-radius:999px;border:none;background:#00000099;color:#fff;cursor:pointer;font-weight:600;}
+.btn:hover{background:#000000cc;}
+.map img{width:100%;height:auto;border-radius:12px;margin-bottom:12px;}
+.map-links a{display:block;width:90%;max-width:240px;margin:8px auto;padding:10px;border-radius:12px;text-decoration:none;color:#fff;font-weight:bold;}
+.gmap{background:#4285f4;}
+.neshan{background:#06a77d;}
+.balad{background:#f97316;}
+.slide-container{position:relative;width:100%;max-width:740px;overflow:hidden;}
+.slide{display:none;width:100%;transition:transform 0.4s ease;}
+.active-slide{display:block;}
+.slide-nav{display:flex;justify-content:center;gap:12px;margin-bottom:16px;}
+@media (max-width:480px){.time-box{font-size:1.5rem;padding:10px 16px;}}
+</style>
+</head>
+<body>
+
+<h1>دعوت‌نامه عروسی</h1>
+
+<div class="digital-countdown" id="countdown">
+  <div><div class="time-box" id="days">00</div><div class="time-label">روز</div></div>
+  <div><div class="time-box" id="hours">00</div><div class="time-label">ساعت</div></div>
+  <div><div class="time-box" id="minutes">00</div><div class="time-label">دقیقه</div></div>
+  <div><div class="time-box" id="seconds">00</div><div class="time-label">ثانیه</div></div>
+</div>
+
+<div class="slide-container" id="slideContainer">
+  <!-- اسلاید ۱: ویدیو -->
+  <div class="slide active-slide">
+    <div class="card">
+      <div class="names">مهیا و وحید – ۱۴۰۴/۰۶/۲۲</div>
+      <video id="weddingVideo" autoplay muted loop playsinline poster="poster.jpg">
+        <source src="video.mp4" type="video/mp4">
+      </video>
+      <div class="controls">
+        <button id="muteBtn" class="btn">🔇 MUTE / 🎵 MUSIC</button>
+        <button id="replayBtn" class="btn">↺ Replay</button>
+      </div>
+      <p style="margin-top:12px;font-size:0.9rem;color:#334155;">
+        📝 توجه: آدرس مراسم در اسلاید بعدی قرار دارد.
+      </p>
+    </div>
+  </div>
+
+  <!-- اسلاید ۲: کروکی -->
+  <div class="slide">
+    <div class="card map-card">
+      <h2>آدرس و کروکی مراسم</h2>
+      <img src="map.jpg" alt="کروکی مراسم">
+      <p>برای دسترسی سریع‌تر از QR Code استفاده کنید:</p>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.google.com/maps?q=29.849109622637428,52.361678971085325" alt="QR Code">
+      <div class="map-links">
+        <a class="gmap" href="https://www.google.com/maps?q=29.849109622637428,52.361678971085325" target="_blank">📍 Google Maps</a>
+        <a class="neshan" href="https://nshn.ir/29.849109622637428,52.361678971085325" target="_blank">🗺️ نشان</a>
+        <a class="balad" href="https://balad.ir/location/29.849109622637428,52.361678971085325" target="_blank">🚗 بلد</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide-nav">
+  <button onclick="prevSlide()" class="btn">⬅ قبلی</button>
+  <button onclick="nextSlide()" class="btn">بعدی ➡</button>
+</div>
+
+<script>
+// ویدیو کنترل
+const v = document.getElementById('weddingVideo');
+const muteBtn = document.getElementById('muteBtn');
+const replayBtn = document.getElementById('replayBtn');
+v.muted = true;
+v.play().catch(()=>{});
+muteBtn.addEventListener('click',()=>{
+  v.muted = !v.muted;
+  muteBtn.textContent = v.muted ? '🎵 MUSIC' : '🔇 MUTE';
+});
+replayBtn.addEventListener('click',()=>{v.currentTime=0; v.play();});
+
+// شمارش معکوس دیجیتالی با تاریخ 22 شهریور 1404 ساعت 19
+const eventDate = new Date("2025-09-13T19:00:00"); 
+function updateCountdown(){
+  const now = new Date();
+  const diff = eventDate - now;
+  if(diff<=0){
+    document.getElementById('days').textContent='00';
+    document.getElementById('hours').textContent='00';
+    document.getElementById('minutes').textContent='00';
+    document.getElementById('seconds').textContent='00';
+    return;
+  }
+  const days = Math.floor(diff/1000/60/60/24);
+  const hours = Math.floor((diff/1000/60/60)%24);
+  const minutes = Math.floor((diff/1000/60)%60);
+  const seconds = Math.floor((diff/1000)%60);
+  document.getElementById('days').textContent=String(days).padStart(2,'0');
+  document.getElementById('hours').textContent=String(hours).padStart(2,'0');
+  document.getElementById('minutes').textContent=String(minutes).padStart(2,'0');
+  document.getElementById('seconds').textContent=String(seconds).padStart(2,'0');
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+// کنترل اسلایدها
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+function showSlide(index){
+  slides.forEach(s=>s.classList.remove('active-slide'));
+  slides[index].classList.add('active-slide');
+}
+function nextSlide(){
+  currentSlide = (currentSlide+1)%slides.length;
+  showSlide(currentSlide);
+}
+function prevSlide(){
+  currentSlide = (currentSlide-1+slides.length)%slides.length;
+  showSlide(currentSlide);
+}
+
+// سوایپ موبایل
+let startX = 0;
+let endX = 0;
+const slideContainer = document.getElementById('slideContainer');
+
+slideContainer.addEventListener('touchstart', e => {
+  startX = e.touches[0].clientX;
+});
+
+slideContainer.addEventListener('touchmove', e => {
+  endX = e.touches[0].clientX;
+});
+
+slideContainer.addEventListener('touchend', e => {
+  if(startX - endX > 50) nextSlide();
+  if(endX - startX > 50) prevSlide();
+});
+</script>
+
+</body>
+</html>
